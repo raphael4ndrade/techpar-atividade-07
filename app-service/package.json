@@ -10,14 +10,12 @@
     "javascript",
     "nodejs",
     "express",
-    "knex",
-    "cors"
+    "knex"
   ],
   "author": "raphael4ndrade",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.1",
-    "cors": "^2.8.3",
     "express": "^4.15.2",
     "knex": "^0.12.9",
     "sqlite3": "^3.1.8"

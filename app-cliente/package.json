@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify src/main.js -o src/build.js",
+    "build": "browserify src/main.js -o build.js",
     "dev": "budo src/main.js:build.js --live --open"
   },
   "author": "raphel4ndrade",

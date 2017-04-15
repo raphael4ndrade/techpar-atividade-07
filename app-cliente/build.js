@@ -34611,69 +34611,68 @@ require('./angular');
 module.exports = angular;
 
 },{"./angular":3}],5:[function(require,module,exports){
-const angular = require("angular");
+// ./controllers/index.js
+let app = require('angular').module('webapp');
 
-let server_url = "http://127.0.0.1:3000";
+app.controller('toSaveController', require('./toSave'));
+app.controller('toListController', require('./toList'));
 
-let httpService = angular
-    .module("webapp")
-    .service("httpService", function ($http) {
-        // function httpService($http) {
-        this.save = (obj) => $http.post(server_url + "/save", obj);
-        this.list = () => $http.get(server_url + "/list");
-    });
 
-module.exports = httpService;
-},{"angular":4}],6:[function(require,module,exports){
-const angular = require("angular");
 
-angular.module("webapp", [
-    require("angular-route")
-]);
+},{"./toList":6,"./toSave":7,"angular":4}],6:[function(require,module,exports){
+module.exports =
+    function toListController(httpService) {
+        this.list = () => {
+            httpService.list()
+                .then((ret) => this.listAll = ret.data);
+        }
 
-angular
-    .module("webapp")
-    .config(($routeProvider) => {
-        $routeProvider.when("/list", require("./toList.controller"));
-        $routeProvider.when("/save", require("./toSave.controller"));
-        $routeProvider.otherwise("/list", require("./toList.controller"));
-    })
-
-// angular.bootstrap(document, ["webapp"]);
-},{"./toList.controller":7,"./toSave.controller":8,"angular":4,"angular-route":2}],7:[function(require,module,exports){
-let httpService = require('./http.service');
-
-function toListController(httpService) {
-    this.list = () => {
-        httpService.list()
-            .then((ret) => this.listAll = ret.data);
-    }
-
-    this.list();
-}
-
-module.exports = {
-    controller : toListController,
-    templateUrl : "templates/list.html",
-    controllerAs : "ctrl"
-};
-},{"./http.service":5}],8:[function(require,module,exports){
-let httpService = require('./http.service');
-
-function toSaveController(httpService) {
-    this.obj = {}
-
-    this.save = () => {
-        httpService.save(this.obj)
-            .then((ret) => {
-                this.obj = {};
-            });
+        this.list();
     };
-}
+},{}],7:[function(require,module,exports){
+module.exports =
+    function toSaveController(httpService) {
+        this.obj = {}
 
-module.exports = {
-    controller : toSaveController,
-    templateurl : "templates/save.html",
-    controllerAs : "ctrl"
-};
-},{"./http.service":5}]},{},[6]);
+        this.save = () => {
+            httpService.save(this.obj)
+                .then((ret) => {
+                    this.obj = {};
+                });
+        };
+    };
+
+},{}],8:[function(require,module,exports){
+let angular = require("angular");
+
+let app = angular.module("webapp", [require('angular-route')]);
+
+require('./controllers');
+require('./services');
+
+app.config(($routeProvider) => {
+    $routeProvider.when("/list", {
+        controller : "toListController",
+        templateUrl : "templates/list.html",
+        controllerAs: "ctrl"
+    })
+    .when("/save", {
+        controller : "toSaveController",
+        templateUrl: "templates/save.html",
+        controllerAs : "ctrl"
+    })
+    .otherwise('/save');
+});
+},{"./controllers":5,"./services":10,"angular":4,"angular-route":2}],9:[function(require,module,exports){
+module.exports =
+    function httpService($http){
+        let baseURL = "http://127.0.0.1:3000";
+        this.save = (obj) => $http.post(baseURL + "/save", obj);
+        this.list = () => $http.get(baseURL + "/list");
+    };
+},{}],10:[function(require,module,exports){
+// ./services/index.js
+let app = require('angular').module('webapp');
+
+app.service('httpService', require('./http'));
+},{"./http":9,"angular":4}]},{},[8]);

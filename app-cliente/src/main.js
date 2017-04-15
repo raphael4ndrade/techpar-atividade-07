@@ -1,15 +1,22 @@
-const angular = require("angular");
+let angular = require("angular");
 
-angular.module("webapp", [
-    require("angular-route")
-]);
+require('angular-route')
 
-angular
-    .module("webapp")
-    .config(($routeProvider) => {
-        $routeProvider.when("/list", require("./toList.controller"));
-        $routeProvider.when("/save", require("./toSave.controller"));
-        $routeProvider.otherwise("/list", require("./toList.controller"));
+let app = angular.module("webapp", ['ngRoute']);
+
+require('./controllers');
+require('./services');
+
+app.config(($routeProvider) => {
+    $routeProvider.when("/list", {
+        controller : "toListController",
+        templateUrl : "templates/list.html",
+        controllerAs: "ctrl"
     })
-
-// angular.bootstrap(document, ["webapp"]);
+    .when("/save", {
+        controller : "toSaveController",
+        templateUrl: "templates/save.html",
+        controllerAs : "ctrl"
+    })
+    .otherwise('/save');
+});
